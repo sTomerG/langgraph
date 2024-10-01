@@ -339,57 +339,57 @@ class TestAsyncPostgresStore:
             for namespace in test_namespaces:
                 await store.aput(namespace, "dummy", {"content": "dummy"})
 
-            # prefix_result = await store.alist_namespaces(prefix=[test_pref, "test"])
-            # assert len(prefix_result) == 4
-            # assert all([ns[1] == "test" for ns in prefix_result])
+            prefix_result = await store.alist_namespaces(prefix=[test_pref, "test"])
+            assert len(prefix_result) == 4
+            assert all([ns[1] == "test" for ns in prefix_result])
 
-            # specific_prefix_result = await store.alist_namespaces(
-            #     prefix=[test_pref, "test", "documents"]
-            # )
-            # assert len(specific_prefix_result) == 2
-            # assert all(
-            #     [ns[1:3] == ("test", "documents") for ns in specific_prefix_result]
-            # )
+            specific_prefix_result = await store.alist_namespaces(
+                prefix=[test_pref, "test", "documents"]
+            )
+            assert len(specific_prefix_result) == 2
+            assert all(
+                [ns[1:3] == ("test", "documents") for ns in specific_prefix_result]
+            )
 
-            # suffix_result = await store.alist_namespaces(suffix=["public", test_pref])
-            # assert len(suffix_result) == 4
-            # assert all(ns[-2] == "public" for ns in suffix_result)
+            suffix_result = await store.alist_namespaces(suffix=["public", test_pref])
+            assert len(suffix_result) == 4
+            assert all(ns[-2] == "public" for ns in suffix_result)
 
-            # prefix_suffix_result = await store.alist_namespaces(
-            #     prefix=[test_pref, "test"], suffix=["public", test_pref]
-            # )
-            # assert len(prefix_suffix_result) == 2
-            # assert all(
-            #     ns[1] == "test" and ns[-2] == "public" for ns in prefix_suffix_result
-            # )
+            prefix_suffix_result = await store.alist_namespaces(
+                prefix=[test_pref, "test"], suffix=["public", test_pref]
+            )
+            assert len(prefix_suffix_result) == 2
+            assert all(
+                ns[1] == "test" and ns[-2] == "public" for ns in prefix_suffix_result
+            )
 
-            # wildcard_prefix_result = await store.alist_namespaces(
-            #     prefix=[test_pref, "*", "documents"]
-            # )
-            # assert len(wildcard_prefix_result) == 5
-            # assert all(ns[2] == "documents" for ns in wildcard_prefix_result)
+            wildcard_prefix_result = await store.alist_namespaces(
+                prefix=[test_pref, "*", "documents"]
+            )
+            assert len(wildcard_prefix_result) == 5
+            assert all(ns[2] == "documents" for ns in wildcard_prefix_result)
 
-            # wildcard_suffix_result = await store.alist_namespaces(
-            #     suffix=["*", "public", test_pref]
-            # )
-            # assert len(wildcard_suffix_result) == 4
-            # assert all(ns[-2] == "public" for ns in wildcard_suffix_result)
-            # wildcard_single = await store.alist_namespaces(
-            #     suffix=["some", "*", "public", test_pref]
-            # )
-            # assert len(wildcard_single) == 1
-            # assert wildcard_single[0] == (
-            #     test_pref,
-            #     "prod",
-            #     "documents",
-            #     "some",
-            #     "nesting",
-            #     "public",
-            #     test_pref,
-            # )
+            wildcard_suffix_result = await store.alist_namespaces(
+                suffix=["*", "public", test_pref]
+            )
+            assert len(wildcard_suffix_result) == 4
+            assert all(ns[-2] == "public" for ns in wildcard_suffix_result)
+            wildcard_single = await store.alist_namespaces(
+                suffix=["some", "*", "public", test_pref]
+            )
+            assert len(wildcard_single) == 1
+            assert wildcard_single[0] == (
+                test_pref,
+                "prod",
+                "documents",
+                "some",
+                "nesting",
+                "public",
+                test_pref,
+            )
 
-            # max_depth_result = await store.alist_namespaces(max_depth=3)
-            # assert all([len(ns) <= 3 for ns in max_depth_result])
+            max_depth_result = await store.alist_namespaces(max_depth=3)
+            assert all([len(ns) <= 3 for ns in max_depth_result])
             max_depth_result = await store.alist_namespaces(
                 max_depth=4, prefix=[test_pref, "*", "documents"]
             )
